@@ -11,7 +11,7 @@ var users = require('./routes/users');
 var cate = require('./routes/cate');
 var news = require('./routes/news');
 var comment = require('./routes/comment');
-
+var axios = require('axios')
 var app = express();
 
 mongoose.connect('mongodb://localhost/test', { useMongoClient: true });
@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors());
 
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 
 // app.all('*', function(req, res, next) {
