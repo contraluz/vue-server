@@ -76,9 +76,24 @@ function reverseTree(data, pid){
 
 
 exports.list = function(req,res,next){
-	DataModel.find({},function(err,data){
+	var type = req.params.type;
+	DataModel.find({type:type},function(err,data){
 		var rpTree = reverseTree(data, null);
 		res.json(rpTree);
 	})
 	
+}
+
+exports.deletes = function(req,res,next){
+	var ids = req.body.ids;
+	
+	if(ids.length>0){
+		console.log(ids.split(','))
+		DataModel.remove({_id: {$in: ids.split(',')}})
+		.then(data=>{
+			res.json({"msg":"deletes success","status":200});
+		})
+	}else{
+		res.json({"msg":"deletes fail","status":404});
+	}
 }

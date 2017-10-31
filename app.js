@@ -11,8 +11,12 @@ var users = require('./routes/users');
 var cate = require('./routes/cate');
 var news = require('./routes/news');
 var comment = require('./routes/comment');
+
+var upload = require('./routes/upload');
+
 var axios = require('axios')
 var app = express();
+
 
 mongoose.connect('mongodb://localhost/test', { useMongoClient: true });
 // MVC
@@ -49,6 +53,7 @@ app.use('/users', users);
 app.use('/cate', cate);
 app.use('/news', news);
 app.use('/comment', comment);
+app.use('/upload', upload);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

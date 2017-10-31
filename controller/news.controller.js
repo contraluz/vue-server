@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 const DataModel = require('../models/news.model');
-
+const Comment = require('../models/comment.model')
 exports.create = function(req,res,next){
 	const dataModel = new DataModel(req.body);
 
