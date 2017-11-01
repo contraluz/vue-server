@@ -10,8 +10,10 @@ var NewsSchema = new Schema({
 	name:String,
 	comment:Number,
 	words:String,
+	content:String,
 	date: { type: Date, default: Date.now },
-	cateId: ObjectId
+	cateId: ObjectId,
+	title: String,
 })
 
 NewsSchema.plugin(mongoosePaginate);
