@@ -18,7 +18,9 @@ var UploadSchema = new Schema({
 	destination: String,
 	filename: String,
 	path: String,
-	size: Number
+	size: Number,
+	
+	title:String
 })
 
 UploadSchema.plugin(mongoosePaginate);

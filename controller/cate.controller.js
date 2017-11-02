@@ -1,6 +1,39 @@
 var mongoose = require('mongoose');
 const DataModel = require('../models/cate.model');
 
+var multer = require('multer');
+var path = require("path");
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './uploads')
+    },
+    //下面文件命名方式，加时间戳加文件原始后缀
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now()+path.extname(file.originalname))
+    }
+  })
+
+exports.upload = function(req,res,next){
+    var upload = multer({ 
+        storage: storage 
+    }).single('avatar');
+    
+    upload(req,res,function(err){
+        console.log(req.file)
+
+        const dataModel = new DataModel(req.file);
+        
+            dataModel.save()
+            .then(data=>{
+                res.json(data);
+            })
+
+        res.end('The file is uploaded')
+    })
+}
+
+
 exports.create = function(req,res,next){
 	const dataModel = new DataModel(req.body);
 
@@ -61,7 +94,6 @@ function reverseTree(data, pid){
 		if(data[i].parentId == pid){
 			result.push(data[i]);
 
-
 			temp = reverseTree(data, data[i]._id);
 
 			if(temp.length>0){
@@ -76,13 +108,16 @@ function reverseTree(data, pid){
 
 
 exports.list = function(req,res,next){
+
 	var type = req.params.type;
+	console.log(req.params)
 	DataModel.find({type:type},function(err,data){
 		var rpTree = reverseTree(data, null);
 		res.json(rpTree);
 	})
 	
 }
+
 
 exports.deletes = function(req,res,next){
 	var ids = req.body.ids;

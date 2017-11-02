@@ -40,7 +40,7 @@ exports.remove = function(req,res,next){
 
 exports.list = function(req,res,next){
 	var page = (req.body.page) ? req.body.page : 1;
-	var rows = (req.body.rows) ? req.body.rows : 5;
+	var rows = (req.body.rows) ? req.body.rows : 10;
 
 	var queryCondition = {};
 	if(req.body.name && req.body.name.trim().length>0){

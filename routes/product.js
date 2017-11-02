@@ -1,9 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var dataCtrl = require('../controller/upload.controller');
-
-router.post('/upload',dataCtrl.upload);
+var dataCtrl = require('../controller/product.controller');
 
 router.post('/data',dataCtrl.create);
 router.get('/data/:id',dataCtrl.get);
