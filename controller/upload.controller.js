@@ -63,24 +63,11 @@ exports.update = function(req,res,next){
 
 exports.remove = function(req,res,next){
 	const id = req.params.id;
-	var ids = [];
-	DataModel.findOne({_id: id},function(err,doc){
-		if(doc){
-			 ids = [doc._id];
-			 doc.getChildren().then(function(docs){
 
-		      for(var i=0;i<docs.length;i++){
-		      	ids.push(docs[i]._id);
-		      }
-
-		      DataModel.remove({ _id : {$in : ids}})
-		      .then(data=>{
-		      	res.json({"msg":"deletes success","status":200});
-		      })
-
-		    });
-		}
+	DataModel.findByIdAndRemove(id,function(err,data){
+		res.json(data);
 	})
+	
 }
 
 function reverseTree(data, pid){
@@ -108,14 +95,35 @@ function reverseTree(data, pid){
 }
 
 
+// exports.list = function(req,res,next){
+// 	var type = req.params.type;
+// 	DataModel.find({type:type},function(err,data){
+// 		var rpTree = reverseTree(data, null);
+// 		res.json(rpTree);
+// 	})
+
+// }
 exports.list = function(req,res,next){
-	var type = req.params.type;
-	DataModel.find({type:type},function(err,data){
-		var rpTree = reverseTree(data, null);
-		res.json(rpTree);
-	})
+	var page = (req.body.page) ? req.body.page : 1;
+	var rows = (req.body.rows) ? req.body.rows : 10;
+
+	var queryCondition = {};
+	if(req.body.filename && req.body.filename.trim().length>0){
+		filename = req.body.filename;
+		queryCondition = {
+			"filename" : new RegExp(filename, 'i')
+		}
+	}
+
+	DataModel.paginate(queryCondition, {sort: { _id : -1 }, page: parseInt(page), limit: parseInt(rows) }, function(err, result) {
+	 	result.rows = result.docs;
+	 	delete result.docs;
+	 	res.json(result)
+	});
 	
 }
+
+
 
 exports.deletes = function(req,res,next){
 	var ids = req.body.ids;
