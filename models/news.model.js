@@ -14,6 +14,7 @@ var NewsSchema = new Schema({
 	date: { type: Date, default: Date.now },
 	cateId: ObjectId,
 	title: String,
+	picture: String,
 })
 
 NewsSchema.plugin(mongoosePaginate);

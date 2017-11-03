@@ -10,6 +10,19 @@ exports.create = function(req,res,next){
 	})
 }
 
+exports.checkLogin = function(req,res,next){
+	var name = req.body.name;
+	var password = req.body.password;	
+	var data = {name : name, password : password}
+
+	DataModel.find(data, function (err, data) {
+		if(data.length>0){
+			 res.json(data);
+		}
+		res.json({"status":404,"msg":"用户名或密码错误"});
+	})
+}
+
 exports.get = function(req,res,next){
 	var id = req.params.id;
 
